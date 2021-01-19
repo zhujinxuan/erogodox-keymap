@@ -1,3 +1,7 @@
+#pragma once
+#ifndef COMBO_COUNT
+#define COMBO_COUNT 4
+#endif
 enum combos {
     TK__LS_CB,
     KAPSLOCK,

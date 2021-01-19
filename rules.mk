@@ -6,6 +6,7 @@ ONEHAND_ENABLE   = yes # Allow swapping hands of keyboard
 KEY_LOCK_ENABLE  = yes # Enable the KC_LOCK key
 # TAP_DANCE_ENABLE = yes # Enable the tap dance feature.
 CONSOLE_ENABLE   = yes  # Console for debug
+COMBO_ENABLE   = yes  # Console for debug
 
 BOOTMAGIC_ENABLE = no  # Virtual DIP switch configuration
 UNICODE_ENABLE   = no

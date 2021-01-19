@@ -5,6 +5,7 @@
 
 #include QMK_KEYBOARD_H
 #include "keycodes/dual.h"
+#include "keycodes/combo.h"
 
 // SAFE_RANGE must be used to tag the first element of the enum.
 // DYNAMIC_MACRO_RANGE must always be the last element of the enum if other
@@ -40,13 +41,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // Layer 0: basic keys.
   [_DVORAK] = LAYOUT_ergodox_pretty(
     KC_DLR,           KC_AMPR,  KC_LBRC,  KC_LCBR, KC_RCBR, KC_LPRN, KC_CIRC,           KC_F4,        KC_EQUAL,KC_ASTR, KC_BSLASH, KC_PLUS, KC_RBRACKET, KC_EXLM,
-    OSMGUI, KC_SCOLON,KC_COMMA, KC_DOT,  KC_P,    KC_Y,    KC_PERC,           KC_DELETE,    KC_F,    KC_G,    KC_C,      KC_R,    KC_V,        KC_SLASH,
-    OSMCTL,          KC_A,     KC_O,     LOWE,    KC_U,    KC_I,                                     KC_D,    KC_H,    LOWT,      KC_N,    KC_S,        KC_MINUS,
-    OSMALT,          KC_QUOTE, KC_Q,     KC_J,    KC_K,    KC_X,    KC_LALT,           ___,          KC_B,    KC_L,    KC_M,      KC_W,    KC_Z,        KC_RSPC,
-    RESET,            KC_HASH,  KC_GRAVE, KC_LEFT, KC_RIGHT,                                                   KC_UP,   KC_DOWN,   KC_HOME, KC_END,     ___,
+    OSMGUI, KC_QUOT,KC_COMMA, KC_DOT,  KC_P,    KC_Y,    KC_PERC,           KC_DELETE,    KC_F,    KC_G,    KC_C,      KC_R,    KC_V,        KC_SLASH,
+    OSMCTL,          CTL_T(KC_A),     KC_O,     LOWE,    KC_U,    KC_I,                                     KC_D,    KC_H,    LOWT,      KC_N,    KC_S,        KC_MINUS,
+    OSMALT,          KC_SCLN, KC_Q,     KC_J,    KC_K,    KC_X,    KC_LALT,           ___,          KC_B,    KC_L,    KC_M,      KC_W,    KC_Z,        KC_RSPC,
+    RESET,            KC_HASH,  KC_GRAVE, KC_LEFT, KC_MINS,                                                   KC_SLSH,   KC_DOWN,   KC_HOME, KC_END,     ___,
     KC_LPRN, KC_RPRN, KC_LBRC, KC_RBRC,
     KC_BSLASH,           ___,
-    GUI_T(KC_ESCAPE), SFT_T(KC_TAB), KC_ASTR,          KC_ASTR, SFT_T(KC_ENTER), GUI_T(KC_SPACE)),
+    SFT_T(KC_ESCAPE), GUI_T(KC_TAB), KC_ASTR,          KC_ASTR, GUI_T(KC_ENTER), SFT_T(KC_SPACE)),
 
   // Layer 1: function and numpad keys.
   [_LOWER] = LAYOUT_ergodox_pretty(
