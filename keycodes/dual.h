@@ -40,3 +40,8 @@ enum layer_names {
 #define T_DVORAK TO(_DVORAK)
 #define T_LOWER TO(_LOWER)
 #define T_RAISE TO(_RAISE)
+
+// SAFE_RANGE must be used to tag the first element of the enum.
+enum custom_keycodes {
+    MC_REG = SAFE_RANGE,
+};

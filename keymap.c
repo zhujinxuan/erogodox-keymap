@@ -7,15 +7,6 @@
 #include "keycodes/dual.h"
 #include "keycodes/combo.h"
 
-// SAFE_RANGE must be used to tag the first element of the enum.
-// DYNAMIC_MACRO_RANGE must always be the last element of the enum if other
-// values are added (as its value is used to create a couple of other keycodes
-// after it).
-enum custom_keycodes {
-    MC_ARROW = SAFE_RANGE,
-    DYNAMIC_MACRO_RANGE
-};
-
 // A 'transparent' key code (that falls back to the layers below it).
 #define ___ KC_TRANSPARENT
 
@@ -34,9 +25,6 @@ enum custom_keycodes {
 #define MAC_L     LGUI(LSFT(KC_UP)) // cmd + shift + up
 #define MAC_R     LGUI(LSFT(KC_DOWN)) // cmd + shift + down
 
-// This file must be included after DYNAMIC_MACRO_RANGE is defined...
-#include "dynamic_macro.h"
-
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // Layer 0: basic keys.
   [_DVORAK] = LAYOUT_ergodox_pretty(
@@ -53,8 +41,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_LOWER] = LAYOUT_ergodox_pretty(
     ___,  KC_F1,   KC_F2,    KC_F3,       KC_F4,       KC_F5,      ___,  ___, KC_F6,   KC_F7,  KC_F8,  KC_F9,      KC_F10,       KC_F11,
     ___,  KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, ___,              ___,  KC_EQL,  KC_7,   KC_8,   KC_9,       KC_ASTR,      KC_F12,
-    ___,  KC_CIRC, KC_LEFT, KC_UP,   KC_RGHT, KC_AMPR,                        KC_PLUS, KC_4,   KC_5,   KC_6,       KC_BSPC,      KC_UNDS,
-    ___,  KC_COPY, KC_PASTE,KC_DOWN, KC_RPRN, KC_RBRC,    ___,  ___, KC_DQT,    KC_1,   KC_2,   KC_3,       KC_F12,  KC_BSLASH,
+    ___,  KC_CIRC, KC_LEFT, KC_UP,   KC_RGHT, KC_AMPR,                        KC_0, KC_4,   KC_5,   KC_6,       KC_BSPC,      KC_UNDS,
+    ___,  KC_COPY, KC_PASTE,KC_DOWN, KC_RPRN, KC_RBRC,    ___,  ___, MC_REG,    KC_1,   KC_2,   KC_3,       KC_F12,  KC_BSLASH,
     ___,  ___,     ___,      ___,         ___,                                                ___,    KC_KP_DOT, KC_0,    KC_EQUAL,     ___,
     ___,    ___,         KC_KP_ASTERISK, KC_KP_SLASH,
     KC_LCTL,         ___,
@@ -93,25 +81,32 @@ static bool is_macro1_recording = false;
 static uint32_t current_layer_state = 0;
 uint32_t layer_state_set_user(uint32_t state);
 
+static uint16_t key_timer = 0;
 // Runs for each key down or up event.
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  // That key is processed by the macro_tapdance_fn. Not ignoring it here is
-  // mostly a no-op except that it is recorded in the macros (and uses space).
-  // We can't just return false when the key is a tap dance, because
-  // process_record_user, is called before the tap dance processing (and
-  // returning false would eat the tap dance).
-  if (!process_record_dynamic_macro(keycode, record)) {
-    return false;
-  }
+#ifdef CONSOLE_ENABLE
 
+    uprintf("KL: kc: %u, col: %u, row: %u, pressed: %u\n", keycode, record->event.key.col, record->event.key.row, record->event.pressed);
+
+    if (timer_elapsed(key_timer) < 1000) {
+        uprintf("time: %u\n", timer_elapsed(key_timer));
+        // do something if less than 100ms have passed
+    }
+    key_timer = timer_read();
+#endif
+
+    if (record->event.key.col == 5) {
+        capOff();
+    }
   if(record->event.pressed) {
     switch(keycode) {
-      case MC_ARROW:
-        SEND_STRING("=>");
+      case MC_REG:
+        SEND_STRING("\"+");
         return false;
         break;
     }
   }
+
 
   return true; // Let QMK send the enter press/release events
 }
